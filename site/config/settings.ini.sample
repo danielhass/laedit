@@ -1,0 +1,23 @@
+#############################################################
+#															               #
+# This is the Configuration file of the phaenovum Account	#
+# Editor													               #
+# Please copy this file and call it settings.ini           	#
+#              															#
+#############################################################
+
+#########################
+# INSTANCE Configuration#
+#########################
+
+instance = 'default'
+
+########################
+#  LDAP Configuration  #
+########################
+
+ldap-server = 'ip des ldapserver'
+
+ldap-base-dn = 'dc=phaenovum, dc=eu'
+
+ldap-use-tls = true

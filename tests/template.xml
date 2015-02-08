@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+<template>
+   <attribute>
+      <ldapname>b</ldapname>
+      <aliashtmlname>b</aliashtmlname>
+      <displayname>b</displayname>
+      <description>b</description>
+      <flags>b</flags>
+   </attribute>
+   <attribute>
+      <ldapname>b</ldapname>
+      <aliashtmlname>b</aliashtmlname>
+      <displayname>b</displayname>
+      <description>b</description>
+      <flags>b</flags>
+   </attribute>
+</template>

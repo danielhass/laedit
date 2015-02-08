@@ -1,0 +1,38 @@
+This is a site application.
+
+It aims to edit ldap entrys in a single view. And with the permissions of this userentry.
+
+Basic idea:
+
+We are rendering screens
+- Login
+- Edit
+- Commit
+
+Each screen is a state in a finite state maschine.
+
+Statemaschine:
+
+(Login)->(Edit)->(Commit)->(Endscreen)->(Reload the site)
+
+continueing in the statemaschine is done with the js function workflow_confinue.
+
+Terminology of this application:
+
+A Instance is something like a module, which must have a file Theme.php which implements the class Render.
+
+A Instance is a folder in the instance folder in the site folder.
+Following structure must exit:
+- instance/<your instance>
+                          /Theme.php (will be included no include of Render.php is needed)
+                          /js/<many many files>
+                          /css/<many many files>
+                          /imgs/<many many files>
+
+You can access you images with img.php?<yourfile>
+Javascript and css files are printed in the header
+Following javascript functions MUST exist:
+
+- login_username_get()
+- login_password_get()
+- edit_attribute_value_get(name)
