@@ -1,16 +1,20 @@
 #############################################################
-#															               #
-# This is the Configuration file of the phaenovum Account	#
-# Editor													               #
-# Please copy this file and call it settings.ini           	#
-#              															#
+#                                                           #
+# This is the Configuration file of the phaenovum Account   #
+# Editor                                                    #
+# Please copy this file and call it settings.ini            #
+#                                                           #
 #############################################################
 
 #########################
 # INSTANCE Configuration#
 #########################
 
+#instance to take
 instance = 'default'
+
+#the loginservice to take
+loginservice = 'TestBackend'
 
 ########################
 #  LDAP Configuration  #

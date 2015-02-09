@@ -1,10 +1,9 @@
-<!-- Configuration which attributes will be displayed -->
+<?xml version="1.0" ?>
 <template>
-	<attribute>
-		<ldapname>#ldapname</ldapname>
-		<aliashtmlname>#beispielname welcher im html code benutzt wird</aliashtmlname>
-		<displayname>#Name der angezeigt wird</displayname>
-		<description>#beschreibung des users </description>
-		<flags>#flags alloud: pw=Passwordfield ro= readonly sc=SaveCrypted as sha hash</flags>
-	</attribute>
+   <attribute savetype="hashed">
+      <ldapname>ldap3</ldapname>
+      <widget>password</widget>
+      <displayname>Passwort</displayname>
+      <description>bescription</description>
+   </attribute>
 </template>
