@@ -1,11 +1,12 @@
 <?php
 
-function createAnswer($exitcode,$answer = null){
+function createAnswer($exitcode,$answer = null, $log = null){
 
    header('Content-type: text/xml');
    echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
    echo "<request>\n";
    echo "<exitcode>".$exitcode."</exitcode>\n";
+   echo "<log>".$log."</log>";
    echo "<answer>\n";
    //echo "<![CDATA[";
    echo $answer;
@@ -117,23 +118,25 @@ $render = new ThemeRender();
 $service = settings_loginservice();
 $auth = new $service();
 
+$output = "";
+
 switch($_POST['screen']){
    case "login":
-      echo $render->renderScreen("login", NULL);
+      $output = $render->renderScreen("login", NULL);
    break;
    case "edit":
-      echo proceed_edit($auth, $render);
+      $output = proceed_edit($auth, $render);
    break;
    case "commit":
-      echo proceed_commit($auth, $render);
+      $output = proceed_commit($auth, $render);
    break;
    case "endscreen":
-      echo proceed_safe($auth,$render);
+      $output = proceed_safe($auth,$render);
    break;
 }
 
-$answer = ob_get_contents();
+$log = ob_get_contents();
 ob_end_clean();
 
-createAnswer(1, $answer);
+createAnswer(1, $output, $log);
 ?>
