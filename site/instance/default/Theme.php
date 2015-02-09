@@ -8,7 +8,7 @@ class ThemeRender extends Render
 
    function renderLogin()
    {
-      return "<form onSubmit=\"workflow_continue(); return false;\" action='login.php' method='post' accept-charset='UTF-8'>
+      return "<form onSubmit=\"workflow_continue(); return false;\" accept-charset='UTF-8'>
             <fieldset >
             <legend>Login</legend>
 
