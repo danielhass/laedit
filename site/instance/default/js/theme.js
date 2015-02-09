@@ -41,7 +41,7 @@ function theme_edit_attribute_check(key)
    return true;
 }
 
-function theme_waitscreen_title_set()
+function theme_waitscreen_title_set(text)
 {
-
+  alert("Waiting for "+text);
 }

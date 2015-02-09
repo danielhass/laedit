@@ -13,7 +13,9 @@ function set_base(newval)
 function ui_verify_theme(){
    if(typeof theme_login_username_get !== 'undefined' &&
       typeof theme_login_password_get !== 'undefined' &&
+      typeof theme_login_show_error !== 'undefined' &&
       typeof theme_edit_attribute_value_get !== 'undefined' &&
+      typeof theme_edit_attribute_check !== 'undefined' &&
       typeof theme_waitscreen_title_set !== 'undefined')
       return true;
    else
