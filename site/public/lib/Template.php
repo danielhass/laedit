@@ -1,4 +1,15 @@
 <?php
+
+function template_valid()
+{
+   if (file_exists(template_file)) return TRUE;
+
+   Error::push("Template file does not exist. (".template_file.")");
+   Error::push("Exists (should be true): ".(file_exists(template_file) ? "true" : "false" ));
+   Error::push("Readable (should be true): ".(is_readable(template_file) ? "true" : "false"));
+   return FALSE;
+}
+
 /*
  Template parser
  */

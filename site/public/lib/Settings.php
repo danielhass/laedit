@@ -8,10 +8,9 @@ function settings_testFile() {
    if(file_exists(config_file) &&
          is_readable(config_file))
       return true;
-
-   echo "File transactions failed, the following should be true, true\n";
-   echo "Exists : ".(file_exists(config_file) ? "true" : "false" )."\n";
-   echo "Is Readable : ".(is_readable(config_file) ? "true" : "false")."\n";
+   Error::push("Settings file not usable (".config_file.")");
+   Error::push("Exists (should be true): ".(file_exists(config_file) ? "true" : "false" ));
+   Error::push("Readable (should be true): ".(is_readable(config_file) ? "true" : "false"));
 
    return false;
 }

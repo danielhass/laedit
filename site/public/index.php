@@ -1,6 +1,7 @@
 <?php
 
 include "./lib/Main.php";
+include "./lib/Error.php";
 include "./lib/Utils.php";
 include "./lib/Render.php";
 include "./lib/Instance.php";
@@ -34,9 +35,17 @@ echo "<html>";
 if (!settings_testFile())
   error("Error failed to load settings!!");
 
+//check if instance is valid
+if (!instance_valid())
+  error("Error configured instance is not valid");
+
 //check if we can load instance
 if (!instance_load())
   error("Error failed to load instance");
+
+//check if the configured template is cool
+if (!template_valid())
+  error("Error failed to load template file");
 
 //create instance of the render
 $render = new ThemeRender();

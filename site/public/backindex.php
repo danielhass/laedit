@@ -102,13 +102,22 @@ include "./lib/Settings.php";
 include "./lib/System.php";
 include "./lib/Template.php";
 
+
 //check if settings are working
 if (!settings_testFile())
-  error("Error failed to load settings!!");
+  error("Error failed to load settings!!", FALSE);
+
+//check if instance is valid
+if (!instance_valid())
+  error("Error configured instance is not valid", FALSE);
 
 //check if we can load instance
 if (!instance_load())
-  error("Error failed to load instance");
+  error("Error failed to load instance", FALSE);
+
+//check if the configured template is cool
+if (!template_valid())
+  error("Error failed to load template file", FALSE);
 
 ob_start();
 

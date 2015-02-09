@@ -1,7 +1,15 @@
 <?php
-function error($error)
+function error($error, $die = TRUE)
 {
+   echo "<html><body>";
+   echo "<h4> Failed to bring up the site </h4>";
    echo $error."\n";
+   echo "<br/>";
+   echo "<br/>";
+   Error::flush();
+   echo "</body></html>";
+   if ($die)
+     die();
 }
 
 function output_array($arr)
