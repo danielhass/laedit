@@ -1,38 +1,38 @@
-This is a site application.
+This is a php based web-site
 
-It aims to edit ldap entrys in a single view. And with the permissions of this userentry.
+It aimes to be as modular as possible.
 
-Basic idea:
+So the general task this site aimes is
+presenting a way that you can edit things in you userdirectory database, officily there will be just ldap support, but because of the abstraction of the userdirectory every directory will be possible.
 
-We are rendering screens
-- Login
-- Edit
-- Commit
 
-Each screen is a state in a finite state maschine.
+==Terminology of words==
 
-Statemaschine:
+- Workflow:
+   The site is workflowbased, the workflow can be controlled with the calls workflow_continue(symbol) and workflow_end()
+   workflow_end will reload the site
 
-(Login)->(Edit)->(Commit)->(Endscreen)->(Reload the site)
+- Instance:
+   A instance is like a theme render implementation here, it renders the complete site. You can easily replace the current instance by just changing the key in the config.
 
-continueing in the statemaschine is done with the js function workflow_confinue.
+- Configuration:
+   A settings.ini file in the config directory.
+   instance is the instance which will be loaded.
+   loginservice is the loginservice which will be used.
+   The other bits are there for ldap auth.
 
-Terminology of this application:
+- Screen configuration:
+   The configuration file screen_config.php should implement a class called Maschine, the class should act like a state maschine. For more information read the comments in the abstract class.
 
-A Instance is something like a module, which must have a file Theme.php which implements the class Render.
+- Screen:
+   A little module in laedit which renders a site with possible buttons which are controlling the workflow
 
-A Instance is a folder in the instance folder in the site folder.
-Following structure must exit:
-- instance/<your instance>
-                          /Theme.php (will be included no include of Render.php is needed)
-                          /js/<many many files>
-                          /css/<many many files>
-                          /imgs/<many many files>
+==Instance==
 
-You can access you images with img.php?<yourfile>
-Javascript and css files are printed in the header
-Following javascript functions MUST exist:
+A instance has to look like that:
 
-- login_username_get()
-- login_password_get()
-- edit_attribute_value_get(name)
+instance/<yourname>/Theme.php
+                   /js/..
+                   /css/..
+
+All js and css files will be printed into the header of the page.
