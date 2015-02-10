@@ -33,4 +33,21 @@ function content_get($path)
    closedir($dir);
    return $result;
 }
+
+class Instance {
+
+   private static $list = array();
+
+   public static function push($name, $inst)
+   {
+      self::$list[$name] = $inst;
+   }
+
+   public static function get($name)
+   {
+      return self::$list[$name];
+   }
+
+}
+
 ?>

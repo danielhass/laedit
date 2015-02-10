@@ -27,8 +27,11 @@ function login($auth)
      createAnswer(-1, "Login failed");
 }
 
-function proceed_edit($auth,$render)
+function proceed_edit()
 {
+   $auth = Instance::get("auth");
+   $render = Instance::get("render");
+
    login($auth);
    $template = new Template();
    $filled = array();
@@ -62,8 +65,11 @@ function parse_editattribute($auth)
    return $newones;
 }
 
-function proceed_commit($auth, $render)
+function proceed_commit()
 {
+   $auth = Instance::get("auth");
+   $render = Instance::get("render");
+
    login($auth);
 
    $keys_ = $_POST['keys'];
@@ -76,8 +82,11 @@ function proceed_commit($auth, $render)
    return $render->renderScreen("commit", $newones);
 }
 
-function proceed_safe($auth, $render)
+function proceed_safe()
 {
+   $auth = Instance::get("auth");
+   $render = Instance::get("render");
+
    $newones = parse_editattribute($auth);
 
    $keys_ = $_POST['keys'];
@@ -123,9 +132,11 @@ ob_start();
 
 //create instance of the render
 $render = new ThemeRender();
+Instance::push("render", $render);
 
 $service = settings_loginservice();
 $auth = new $service();
+Instance::push("auth", $auth);
 
 $output = "";
 
@@ -134,13 +145,13 @@ switch($_POST['screen']){
       $output = $render->renderScreen("login", NULL);
    break;
    case "edit":
-      $output = proceed_edit($auth, $render);
+      $output = proceed_edit();
    break;
    case "commit":
-      $output = proceed_commit($auth, $render);
+      $output = proceed_commit();
    break;
    case "endscreen":
-      $output = proceed_safe($auth,$render);
+      $output = proceed_safe();
    break;
 }
 
