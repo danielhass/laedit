@@ -32,3 +32,19 @@
    text-align: center;
    color: #9191B5;
 }
+
+.attr-body{
+   background-color: #F9F9F9;
+   border-radius: 5px;
+   border-color:#d2d2d2;
+   border-width: 5px;
+   box-shadow:0 1px 0 #cfcfcf;
+   padding: 15px;
+   margin-bottom: 15px;
+}
+
+.attr-header{
+   margin-bottom: 5px;
+   font-size: 15px;
+   font-weight: bold;
+}

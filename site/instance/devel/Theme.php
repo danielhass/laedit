@@ -19,7 +19,7 @@ class ThemeRender extends Render
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
+              <li class="active"><a href="#">Editor</a></li>
             </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
@@ -57,16 +57,30 @@ EOF;
 EOF;
       foreach ($attributes as $value) {
         $attr = $value->getAttribute();
-        $result .= '<h3>'.$attr->getDisplayName().':</h3>';
         if ($attr->getWidgetType() === "password")
         {
+          $result .=  '<div class="attr-body"> <div class="attr-header"> '.$attr->getDisplayName().':</div>';
           $result .=  '<input id="'.$attr->getLDAPName().'_1" class="form-control input-sm chat-input editor-input" type="password" size="25" value="'.password_placeholder.'"/><br/>';
           $result .=  '<input id="'.$attr->getLDAPName().'_2" class="form-control input-sm chat-input editor-input" type="password" size="25" value="'.password_placeholder.'"/>';
+          $result .=  '</div>';
         }
         else if ($attr->getWidgetType() === "label")
+        {
+          $result .=  '<div class="attr-body"> <div class="attr-header"> '.$attr->getDisplayName().':</div>';
           $result .=  '<input id="'.$attr->getLDAPName().'" class="form-control input-sm chat-input" type="label" readonly="true" size="25" value="'.$value->getValue().'"/>';
+          $result .=  '</div>';
+        }
         else if ($attr->getWidgetType() === "text")
+        {
+          $result .=  '<div class="attr-body"> <div class="attr-header"> '.$attr->getDisplayName().':</div>';
           $result .=  '<input id="'.$attr->getLDAPName().'" class="form-control input-sm chat-input editor-input" type="text" size="25" value="'.$value->getValue().'"/>';
+          $result .=  '</div>';
+        }
+        else if ($attr->getWidgetType() === "checkbox")
+        {
+          $result .=  '<div class="attr-body"> <div class="attr-header"> '.$attr->getDisplayName().':</div> <input id="'.$attr->getLDAPName().'" type="checkbox"/>';
+          $result .=  '</div>';
+        }
       }
       $result .=  "<br/><button type=\"button\" class=\"btn btn-primary login-btn\" onClick=\"workflow_continue();\">Commit changes</button>";
 
