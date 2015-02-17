@@ -3,25 +3,47 @@ class ThemeRender extends Render
 {
    function renderSite($title)
    {
-      return 'I am a site <div id="ui-base"> </div>';
+      //return 'I am a site <div id="ui-base"> </div>';
+	return '
+      <!-- Static navbar -->
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">laedit</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="#">Home</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div><!--/.container-fluid -->
+      </nav>
+      <div id="ui-base"></div>
+               ';
    }
+
 
    function renderLogin()
    {
-      return "<form onSubmit=\"workflow_continue(); return false;\" accept-charset='UTF-8'>
-            <fieldset >
-            <legend>Login</legend>
+      $result = <<<EOF
 
-            <label for='username' >UserName*:</label>
-            <input type='text' name='username' id='username'  maxlength=\"50\" /><br/>
+       <div class="col-md-offset-4 col-md-3">
+	  <div class="login-form">
+          <h4>Login:</h4>
+          <input type="text" id="username" class="form-control input-sm chat-input login-elem" placeholder="Username" />
+          <input type="password" id="password" class="form-control input-sm chat-input login-elem" placeholder="Password" />
+	     <button type="button" class="btn btn-primary login-btn" onClick="workflow_continue();">Login</button>
+          </div>
+       </div>
 
-            <label for='password' >Password*:</label>
-            <input type='password' name='password' id='password' maxlength=\"50\" /><br/>
-
-            <input type='submit' name='Submit' value='Login' />
-
-            </fieldset>
-            </form>";
+EOF;
+      return $result;
    }
 
    function renderFields($attributes)
