@@ -15,7 +15,7 @@ class ThemeRender extends Render
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">laedit</a>
+            <a class="navbar-brand" href="#">l&#x00E6;dit</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -36,9 +36,10 @@ class ThemeRender extends Render
        <div class="col-md-offset-4 col-md-3">
 	  <div class="login-form">
           <h4>Login:</h4>
-          <input type="text" id="username" class="form-control input-sm chat-input login-elem" placeholder="Username" />
-          <input type="password" id="password" class="form-control input-sm chat-input login-elem" placeholder="Password" />
-	     <button type="button" class="btn btn-primary login-btn" onClick="workflow_continue();">Login</button>
+          <input type="text" id="username" class="form-control input-sm chat-input login-elem" placeholder="Username" autofocus="true" onkeydown="if (event.keyCode == 13) clickLoginBtn()"/>
+          <input type="password" id="password" class="form-control input-sm chat-input login-elem" placeholder="Password" onkeydown="if (event.keyCode == 13) clickLoginBtn()"/>
+	  <button type="button" id="loginbtn" class="btn btn-primary login-btn" onClick="workflow_continue();"> Login </button>
+          <div class="wel-msg"> Welcome to l&#x00E6;dit, please log in. </div>
           </div>
        </div>
 
@@ -48,21 +49,33 @@ EOF;
 
    function renderFields($attributes)
    {
-      $result = "";
+      $result = <<<EOF
+
+       <div class="col-md-offset-3 col-md-5">
+       <div class="alert alert-warning" role="alert">You're now in editing mode.</div>
+
+EOF;
       foreach ($attributes as $value) {
         $attr = $value->getAttribute();
         $result .= '<h3>'.$attr->getDisplayName().':</h3>';
         if ($attr->getWidgetType() === "password")
         {
-          $result .=  '<input id="'.$attr->getLDAPName().'_1" type="password" size="25" value="'.password_placeholder.'"/><br/>';
-          $result .=  '<input id="'.$attr->getLDAPName().'_2" type="password" size="25" value="'.password_placeholder.'"/>';
+          $result .=  '<input id="'.$attr->getLDAPName().'_1" class="form-control input-sm chat-input editor-input" type="password" size="25" value="'.password_placeholder.'"/><br/>';
+          $result .=  '<input id="'.$attr->getLDAPName().'_2" class="form-control input-sm chat-input editor-input" type="password" size="25" value="'.password_placeholder.'"/>';
         }
         else if ($attr->getWidgetType() === "label")
-          $result .=  '<input id="'.$attr->getLDAPName().'" type="label" readonly="true" size="25" value="'.$value->getValue().'"/>';
+          $result .=  '<input id="'.$attr->getLDAPName().'" class="form-control input-sm chat-input" type="label" readonly="true" size="25" value="'.$value->getValue().'"/>';
         else if ($attr->getWidgetType() === "text")
-          $result .=  '<input id="'.$attr->getLDAPName().'" type="text" size="25" value="'.$value->getValue().'"/>';
+          $result .=  '<input id="'.$attr->getLDAPName().'" class="form-control input-sm chat-input editor-input" type="text" size="25" value="'.$value->getValue().'"/>';
       }
-      $result .=  "<br/><button onclick=\"workflow_continue();\"> Commit </button>";
+      $result .=  "<br/><button type=\"button\" class=\"btn btn-primary login-btn\" onClick=\"workflow_continue();\">Commit changes</button>";
+
+      $result .= <<<EOF
+
+       </div>
+
+EOF;
+
       return $result;
    }
 
