@@ -1,84 +1,75 @@
-var state;
-var username;
-var password;
-var changed;
-var workflows = ['login', 'edit', 'commit', 'end'];
+var register = {};
+var backband;
+var lastscreen;
 
-function workflow_init() {
-   state = 0;
-}
-
-function _workflow_login_step()
+function workflow_register(name, functionnn)
 {
-   var usr = theme_login_username_get();
-   var pw = theme_login_password_get();
-   if (usr === "" || pw === "")
-    {
-       theme_login_show_error("No empty fields!!");
-       return;
-    }
-   obj = new Array();
-   obj.username = usr;
-   obj.password = pw;
-   ui_display_screen("edit", obj,
-   function(obj){
-      theme_login_show_error(obj.answer);
-   },
-   function(obj){
-      username = usr;
-      password = pw;
-      field_init_fill();
-      state ++;
-   });
+  register[name] = {};
+  register[name]["function"] = functionnn;
 }
-
-function _workflow_edit_screen()
+//valid are created and error
+function workflow_register_signal(name, signal, functionnn)
 {
-   if (!field_check())
-     {
-        alert("Field check failed");
-        return;
-     }
-   obj = new Array();
-   obj.username = username;
-   obj.password = password;
-   field_fill(obj);
-   ui_display_screen("commit", obj,
-   function(obj){
-      alert("BA BA BAAAAAAA.");
-   },
-   function(obj2){
-      changed = obj;
-      state ++;
-   })
+    register[name][signal] = functionnn;
 }
 
-function _workflow_commit_screen()
+function workflow_signal_call(signal, name)
 {
-   ui_display_screen("endscreen", changed,
-   function(obj){
-      alert("BA BA BAAAAAAA.");
-   },
-   function(obj2){
-      changed = obj;
-      state ++;
-   })
+  if (register[name][signal])
+    return register[name][signal]();
 }
 
-function workflow_continue() {
-   switch(state)
-   {
-      case 0:
-         _workflow_login_step();
-      break;
-      case 1:
-         _workflow_edit_screen();
-      break;
+function workflow_call(name)
+{
+  return workflow_signal_call("function", name);
+}
 
-      case 2:
-         _workflow_commit_screen();
-      break;
-   }
+function workflow_last_screen_set(name)
+{
+  lastscreen = name;
+}
+
+function workflow_band_set(band)
+{
+  backband = band;
+}
+
+function workflow_last_screen_get()
+{
+  return lastname;
+}
+
+function workflow_startup()
+{
+  var init = {};
+  init.plain_init = "YES";
+  ui_display_request(init,
+  function(obj){
+    alert("init failed ... last msg: "+obj.answer);
+  },
+  function(obj){
+    workflow_last_screen_set(obj.screen);
+  });
+}
+
+function workflow_continue(sign) {
+  obj = workflow_call(lastscreen);
+  if (!obj)
+    obj = {};
+  //we are going a shortcut here ...
+  obj.username = username;
+  obj.password = password;
+  obj.band = backband;
+  obj.key = sign;
+  ui_display_request(obj,
+  function(ans){
+    alert(ans.answer);
+  },
+  function(ans){
+    workflow_last_screen_set(ans.screen);
+    workflow_signal_call("created", ans.screen)
+    workflow_band_set(ans.band);
+  });
 }
 
 function workflow_end() {

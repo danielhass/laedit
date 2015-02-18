@@ -18,8 +18,7 @@ function loaded(){
       alert("Theme not valid!");
       return;
    }
-   workflow_init();
-   ui_display_screen("login");
+   workflow_startup();
 }
 
 function xml_init(){

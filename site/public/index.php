@@ -9,6 +9,8 @@ include "./lib/Settings.php";
 include "./lib/System.php";
 include "./lib/Attribute.php";
 include "./lib/Template.php";
+include "./lib/Screens.php";
+include "./lib/Workflowcontrol.php";
 
 function formheader($titlesite)
 {
@@ -23,6 +25,7 @@ function formheader($titlesite)
    //write down all the css things from the instance
    output_array(instance_js_get());
    output_array(system_js_get());
+   output_array(screen_js_get());
    echo '</script>';
    echo "</head>";
 }
@@ -47,6 +50,17 @@ if (!instance_load())
 if (!template_valid())
   error("Error failed to load template file");
 
+//check if screen_config is valid
+if (!screen_config_valid())
+  error("Error screen config not valid");
+
+//load screen_config
+if (!screen_config_load())
+  error("Error screen config could not be loaded");
+
+if (!screen_init())
+  error("Error screen init failed!");
+
 //create instance of the render
 $render = new ThemeRender();
 $template = new Template();
@@ -54,6 +68,7 @@ $template = new Template();
 formheader("Hello I am the title");
 //render ground site
 echo "<body>";
+echo '<div class="illuminati" style="visibulity:hidden;position: absolut;"/></div>';
 echo $render->renderSite("Hello I am the title");
 //render a waitscreen which can be shown
 echo '<div id="waitscreen" class="hidden">';

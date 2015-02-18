@@ -31,18 +31,18 @@ function ui_loaded()
    return true;
 }
 
-function ui_display_screen(screen, obj, error, positive)
+function ui_display_request(obj, error, positive)
 {
-   request_screen(screen, function(obj){
-      if (obj.exitcode < 0 && error)
+   request_screen(function(answer){
+      if (answer.exitcode < 0 && error)
       {
-        error(obj);
+        error(answer);
       }
       else
       {
-        set_base(obj.answer);
+        set_base(answer.answer);
         if (positive)
-          positive();
+          positive(answer);
       }
    }, obj);
 }

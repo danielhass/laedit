@@ -11,15 +11,19 @@ function xmlToObject(xml)
    var obj = {};
    parse(xml, obj, "answer");
    parse(xml, obj, "exitcode");
+   parse(xml, obj, "screen");
+   parse(xml, obj, "band");
    return obj;
 }
 
-function request_screen(screenname, func, obj)
+function request_screen(func, obj)
 {
-   var params = "screen="+screenname;
+   var params = "";
    for(var key in obj)
    {
-      params += "&"+key+"="+obj[key];
+      if (params != "")
+        params += "&";
+      params += key+"="+obj[key];
    }
    if (window.XMLHttpRequest) {
       req = new XMLHttpRequest();

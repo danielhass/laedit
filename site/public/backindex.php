@@ -1,116 +1,18 @@
 <?php
-
-function createAnswer($exitcode,$answer = null, $log = null){
-
-   header('Content-type: text/xml');
-   echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-   echo "<request>\n";
-   echo "<exitcode>".$exitcode."</exitcode>\n";
-   echo "<log>".$log."</log>";
-   echo "<answer>\n";
-   //echo "<![CDATA[";
-   echo $answer;
-   //echo "]]>";
-   echo"</answer>\n";
-   echo "</request>\n";
-   //end and flush the buffer !
-   ob_end_flush();
-   exit();
-}
-
-function login($auth)
-{
-   if (!isset($_POST['username']) || !isset($_POST['password']))
-     createAnswer(-1, "No login params ... BAD");
-
-   if (!$auth->login($_POST['username'], $_POST['password']))
-     createAnswer(-1, "Login failed");
-}
-
-function proceed_edit()
-{
-   $auth = Instance::get("auth");
-   $render = Instance::get("render");
-
-   login($auth);
-   $template = new Template();
-   $filled = array();
-   foreach ($template->attributes as $attr) {
-      $filled[] = $auth->fillAttribute($attr);
-   }
-
-   return $render->renderScreen("edit", $filled);
-}
-
-function parse_editattribute($auth)
-{
-   $template = new Template();
-
-   $keys_ = $_POST['keys'];
-   $keys = explode(",", $keys_);
-   $newvalues = array();
-   foreach ($keys as $key) {
-      $val = $_POST[$key];
-      $newvalues[$key] = $val;
-   }
-   $newones = array();
-   foreach ($template->attributes as $attr) {
-      foreach ($newvalues as $key => $value) {
-         if ($key !==  $attr->getLDAPName()) continue;
-
-         $filled = $auth->fillAttribute($attr);
-         $newones[] = new EditAttribute($attr, $filled->getValue(), $value);
-      }
-   }
-   return $newones;
-}
-
-function proceed_commit()
-{
-   $auth = Instance::get("auth");
-   $render = Instance::get("render");
-
-   login($auth);
-
-   $keys_ = $_POST['keys'];
-
-   if ($keys_ === "")
-     return $render->renderScreen("commit", NULL);
-
-   $newones = parse_editattribute($auth);
-
-   return $render->renderScreen("commit", $newones);
-}
-
-function proceed_safe()
-{
-   $auth = Instance::get("auth");
-   $render = Instance::get("render");
-
-   $newones = parse_editattribute($auth);
-
-   $keys_ = $_POST['keys'];
-
-   if ($keys_ === "")
-     return $render->renderScreen("end", NULL);
-
-   foreach ($newones as $value) {
-      if (!$auth->saveAttribute($value))
-        createAnswer(-1, "Saving files failed while sending, ask a admin!");
-   }
-   return $render->renderScreen("end", NULL);
-}
-
 include "./lib/Main.php";
 include "./lib/Utils.php";
 include "./lib/Attribute.php";
 include "./lib/LoginService.php";
 include "./lib/Render.php";
+include "./lib/Error.php";
 include "./lib/Instance.php";
 include "./lib/Settings.php";
 include "./lib/System.php";
 include "./lib/Template.php";
+include "./lib/Screens.php";
+include "./lib/Workflowcontrol.php";
 
+ob_start();
 
 //check if settings are working
 if (!settings_testFile())
@@ -128,7 +30,16 @@ if (!instance_load())
 if (!template_valid())
   error("Error failed to load template file", FALSE);
 
-ob_start();
+//check if screen_config is valid
+if (!screen_config_valid())
+  error("Error screen config not valid", FALSE);
+
+//load screen_config
+if (!screen_config_load())
+  error("Error screen config could not be loaded", FALSE);
+
+if (!screen_init())
+  error("Error screen init failed!", FALSE);
 
 //create instance of the render
 $render = new ThemeRender();
@@ -138,6 +49,79 @@ $service = settings_loginservice();
 $auth = new $service();
 Instance::push("auth", $auth);
 
+/* init state maschine */
+$maschine = Instance::get("screen_config");
+
+$lastscreen = NULL;
+$newscreen = NULL;
+
+if (!isset($_POST['plain_init']) && isset($_POST['band']) && isset($_POST['key']))
+  {
+    //we are in a workflow
+    $arr = explode(",", $_POST['band']);
+    $maschine->setBand($arr);
+    //get the past screen to proceed things
+    $lastscreen = $maschine->getScreen();
+    //pass the new symbol
+    $val = $_POST['key'];
+    $maschine->enterSymbol($val);
+    //get the new screen
+    $newscreen = $maschine->getScreen();
+  }
+else if ((isset($_POST['plain_init'])))
+  {
+    //we are in the case that we are at the startup, render login screen!
+    $lastscreen = NULL;
+    $newscreen = "login";
+  }
+else if (!isset($_POST['plain_init']) && !isset($_POST['band']) && !isset($_POST['key']))
+  {
+    //we are in the case that the login screen is the last screen which got rendered.
+    $lastscreen = "login";
+    $newscreen = $maschine->getScreen();
+  }
+else
+  {
+    //something is basically fucked. :)
+    createAnswer(-1, "Error band AND key var must be present!!");
+  }
+
+$output = "last: ".$lastscreen." new: ".$newscreen;
+
+if ($lastscreen)
+  {
+     $ls_instance = screen_create_instance($lastscreen);
+     if (!$ls_instance)
+       createAnswer(-1, "Screen instance ".$lastscreen." not found");
+     $ls_instance->process();
+  }
+
+if (!$newscreen)
+  {
+     $log = ob_get_contents();
+     ob_end_clean();
+
+     createAnswer(-1, "no newscreen :( what should I do ?", $log);
+  }
+
+$ns_instance = screen_create_instance($newscreen);
+if (!$ns_instance)
+  createAnswer(-1, "Screen instance ".$newscreen." not found");
+
+$log = ob_get_contents();
+ob_end_clean();
+
+$band = "";
+foreach ($maschine->getBand() as $part) {
+  if ($band === "")
+    $band = $part;
+  else
+    $band .= ",".$part;
+}
+
+createAnswer(1, $ns_instance->render(), $log, $newscreen, $band);
+
+/*
 $output = "";
 
 switch($_POST['screen']){
@@ -158,5 +142,5 @@ switch($_POST['screen']){
 $log = ob_get_contents();
 ob_end_clean();
 
-createAnswer(1, $output, $log);
+createAnswer(1, $output, $log);*/
 ?>

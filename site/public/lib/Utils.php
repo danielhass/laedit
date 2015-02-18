@@ -12,6 +12,35 @@ function error($error, $die = TRUE)
      die();
 }
 
+function createAnswer($exitcode,$answer = null, $log = "none", $screen = "none", $band = "none"){
+
+   header('Content-type: text/xml');
+   echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+   echo "<request>\n";
+   echo "<exitcode>".$exitcode."</exitcode>\n";
+   echo "<log>".$log."</log>\n";
+   echo "<screen>".$screen."</screen>\n";
+   echo "<band>".$band."</band>\n";
+   echo "<answer>\n";
+   //echo "<![CDATA[";
+   echo $answer;
+   //echo "]]>";
+   echo "</answer>\n";
+   echo "</request>\n";
+   //end and flush the buffer !
+   ob_end_flush();
+   exit();
+}
+
+function login($auth)
+{
+   if (!isset($_POST['username']) || !isset($_POST['password']))
+     createAnswer(-1, "No login params ... BAD");
+
+   if (!$auth->login($_POST['username'], $_POST['password']))
+     createAnswer(-1, "Login failed");
+}
+
 function output_array($arr)
 {
    foreach($arr as $p)
