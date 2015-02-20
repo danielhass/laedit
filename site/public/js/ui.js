@@ -1,11 +1,11 @@
-function $(val)
+function _$_(val)
 {
    return document.getElementById(val);
 }
 
 function set_base(newval)
 {
-   var base = $("ui-base");
+   var base = _$_("ui-base");
    if(!base) alert("You theme is not valid");
    base.innerHTML = newval;
 }
@@ -24,7 +24,7 @@ function ui_verify_theme(){
 
 function ui_loaded()
 {
-   var ws = $("waitscreen")
+   var ws = _$_("waitscreen")
    if(!ws) return false;
 
    set_base(ws.innerHTML);
