@@ -57,8 +57,9 @@ function content_get($path)
    while($file = readdir($dir))
    {
       if( $file != "." && $file != "..")
-         $result[] = file_get_contents($path."/".$file);
+         $result[$file] = file_get_contents($path."/".$file);
    }
+   ksort($result);
    closedir($dir);
    return $result;
 }
