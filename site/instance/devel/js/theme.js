@@ -1,11 +1,11 @@
 function theme_login_username_get()
 {
-   return $("username").value;
+   return $("#username").val();
 }
 
 function theme_login_password_get()
 {
-   return $("password").value;
+   return $("#password").val();
 }
 
 function theme_login_show_error(msg)
