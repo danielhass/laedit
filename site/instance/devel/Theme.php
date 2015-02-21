@@ -90,14 +90,20 @@ EOF;
 
    function renderLabels($attributevalues)
    {
-      $result = "";
+      $result = <<<EOF
+
+       <div class="col-md-offset-3 col-md-5">
+       <div class="alert alert-warning" role="alert">You're now in commit mode. You can check the changes that you made here.</div>
+
+EOF;
+
       if ($attributevalues == NULL)
-        $result .=  "No changes<br/>";
+        $result .=  "<span class=\"label label-info\">No changes</span>";
       else
         foreach ($attributevalues as $value) {
           $result .=  "Value change from ".$value->getValue()." To ".$value->getNewValue(). "<br/>";
         }
-      $result .=  "<button onclick=\"workflow_continue();\"> Safe </button>";
+      $result .=  "<br/><button type=\"button\" class=\"btn btn-primary login-btn\" onClick=\"workflow_continue();\">Save</button>";
       return $result;
    }
 
