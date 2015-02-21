@@ -34,7 +34,7 @@
 }
 
 .attr-body{
-   background-color: #F9F9F9;
+   background-color: #DDDDDD;
    border-radius: 5px;
    border-color:#d2d2d2;
    border-width: 5px;
@@ -47,4 +47,10 @@
    margin-bottom: 5px;
    font-size: 15px;
    font-weight: bold;
+}
+
+.editor-checkbox{
+   position: relative; 
+   top: -26px; 
+   left: +100px;
 }
