@@ -93,17 +93,39 @@ EOF;
       $result = <<<EOF
 
        <div class="col-md-offset-3 col-md-5">
-       <div class="alert alert-warning" role="alert">You're now in commit mode. You can check the changes that you made here.</div>
+       <div class="panel panel-info">
+          <div class="panel-heading">Commit Screen</div>
+          <div class="panel-body">
+             <p>This is the commit screen. Here can you check the changed values before they are saved to the server.</p>
+          </div>
 
 EOF;
 
       if ($attributevalues == NULL)
-        $result .=  "<span class=\"label label-info\">No changes</span>";
-      else
+        $result .=  "<div class=\"alert alert-danger\" role=\"alert\"><b>No changes made.</b></div>";
+      else{
+        $result .= "<table class=\"table\">";
+        $result .= <<<EOF
+        <thead>
+           <tr>
+              <th data-field="val_old">Old Value</th>
+              <th data-field="val_new">New Value</th>
+           </tr>
+        </thead>
+        <tbody>\n
+EOF;
         foreach ($attributevalues as $value) {
-          $result .=  "Value change from ".$value->getValue()." To ".$value->getNewValue(). "<br/>";
+            $result .= "<tr>";
+            $result .=  "<td>".$value->getValue()."</td>";
+            $result .=  "<td>".$value->getNewValue()."</td>";
+            $result .= "</tr>";    
         }
+        $result .= "</tbody>";
+        $result .= "</table>";
+       }
+      $result .=  "</div>";
       $result .=  "<br/><button type=\"button\" class=\"btn btn-primary login-btn\" onClick=\"workflow_continue();\">Save</button>";
+      $result .=  "</div>";
       return $result;
    }
 
