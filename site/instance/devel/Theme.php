@@ -9,21 +9,46 @@ class ThemeRender extends Render
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
             <a class="navbar-brand" href="#">l&#x00E6;dit</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active"><a href="#">Editor</a></li>
             </ul>
+            <ul class="nav navbar-nav navbar-right">
+               <li>
+                <p class="navbar-btn">
+                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#myModal">About</button>
+                </p>
+            </li>
+            </ul>
           </div><!--/.nav-collapse -->
         </div><!--/.container-fluid -->
       </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">About l&#x00E6;dit</h4>
+      </div>
+      <div class="modal-body">
+        l&#x00E6;dit is a user account editor.</br></br>
+        <b>Developer:</b>
+        <ul>
+           <li>Marcel H.</li>
+           <li>Daniel H.</li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
       <div id="ui-base"></div>
                ';
    }
