@@ -102,12 +102,13 @@ EOF;
 EOF;
 
       if ($attributevalues == NULL)
-        $result .=  "<div class=\"alert alert-danger\" role=\"alert\"><b>No changes made.</b></div>";
+        $result .=  "<div class=\"alert alert-danger commit-nochanges\" role=\"alert\"><b>No changes made.</b></div>";
       else{
-        $result .= "<table class=\"table\">";
+        $result .= "<table class=\"table table-bordered table-hover commit-table\">";
         $result .= <<<EOF
         <thead>
            <tr>
+              <th data-field="attr_name">Attribute Name</th>
               <th data-field="val_old">Old Value</th>
               <th data-field="val_new">New Value</th>
            </tr>
@@ -116,9 +117,10 @@ EOF;
 EOF;
         foreach ($attributevalues as $value) {
             $result .= "<tr>";
-            $result .=  "<td>".$value->getValue()."</td>";
-            $result .=  "<td>".$value->getNewValue()."</td>";
-            $result .= "</tr>";    
+            $result .=  "<td class=\"commit-td\">".$value->getAttribute()->getDisplayName()."</td>";
+            $result .=  "<td class=\"commit-td\">".$value->getValue()."</td>";
+            $result .=  "<td class=\"commit-td\">".$value->getNewValue()."</td>";
+            $result .= "</tr>";
         }
         $result .= "</tbody>";
         $result .= "</table>";
