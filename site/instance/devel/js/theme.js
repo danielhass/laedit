@@ -20,10 +20,18 @@ function theme_edit_attribute_value_get(key)
       elem = _$_(key.name+"_1");
    else
       elem = _$_(key.name);
-   if (!elem)
+
+   if (!elem){
       alert("Failerhaft");
-   else
-      return elem.value;
+   }else if(key.type === "checkbox"){
+      if(_$_(key.name).checked){
+         return 1;
+      }else{
+         return 0;
+      }
+    }else{
+        return elem.value;
+    }
 }
 
 function theme_edit_attribute_check(key)
