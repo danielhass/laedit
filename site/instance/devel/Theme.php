@@ -77,7 +77,7 @@ EOF;
       $result = <<<EOF
 
        <div class="col-md-offset-3 col-md-5">
-       <div class="alert alert-warning" role="alert">You're now in editing mode.</div>
+       <div id="editor_info" class="alert alert-warning" role="alert">You're now in editing mode.</div>
 
 EOF;
       foreach ($attributes as $value) {

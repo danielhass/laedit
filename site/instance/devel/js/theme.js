@@ -42,7 +42,8 @@ function theme_edit_attribute_check(key)
      var pw2 = _$_(key.name+"_2");
      if (!(pw1.value === pw2.value))
        {
-          alert("Passwords are not the same");
+          //alert("Passwords are not the same");
+          $("<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">The Passwords you entered are not the same!</div>").insertAfter("#editor_info");
           return false;
        }
    }
